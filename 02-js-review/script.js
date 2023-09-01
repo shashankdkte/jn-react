@@ -170,7 +170,7 @@ const [primaryGenre, secondaryGenre, ...otherGenres] = genres;
 console.log(primaryGenre, secondaryGenre, otherGenres);
 
 
-// SPREAD OPERATOR
+// SPREAD OPERATOR 
 const newGenres = ["epic fantasy", ...genres];
 newGenres;
 
