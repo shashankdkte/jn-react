@@ -1,9 +1,12 @@
 import React from 'react'
 
-const Stats = () => {
+const Stats = ({ numItems, packedItems }) => {
+  const percentage = Math.floor((packedItems / numItems) * 100);
+
   return (
     <footer className='stats'>
-      <em>💼 You have X items on your list, and you already have packed X (X%)</em>
+      {percentage !== 100 && <em>💼 You have {numItems} items on your list, and you already have packed {packedItems} items ({percentage} %)</em>}
+    {percentage === 100 && <em>You have got everything ! Ready to go</em>}
     </footer>
   )
 }

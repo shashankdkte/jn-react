@@ -8,7 +8,7 @@ const Form = ({handleAddItem}) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newItem = { quantity, description, id: new Date().toISOString(), }
+    const newItem = { quantity, description, id: Date.now(), }
     handleAddItem(newItem);
     setDescription("");
     setQuantity(1);

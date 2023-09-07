@@ -17,11 +17,33 @@ function App() {
       return [...items, newItem]
     });
   }
+
+  const handleDeleteItem = (id) => {
+   
+    setItems((items) => {
+      return items.filter(item=> item.id !== id)
+    })
+  }
+  const handleToggleItem = (id) => {
+    setItems((items) => {
+      return items.map(item => {
+        if (item.id === id)
+        {
+          return {...item, packed : !item.packed }
+        }
+        else
+        {
+          return item
+          }
+      })
+    })
+  }
+  const packedItems =items.filter(item => item.packed)
   return <div className="app" >
     <Logo />
     <Form handleAddItem={handleAddItem}/>
-    <PackingList items={items} />
-    <Stats/>
+    <PackingList items={items} handleDeleteItem={handleDeleteItem}  handleToggleItem={handleToggleItem}/>
+    <Stats numItems = {items.length} packedItems={packedItems.length}/>
   </div>
 }
 
