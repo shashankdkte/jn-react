@@ -1,8 +1,13 @@
 import React from 'react'
+import Item from './Item'
 
-const PackingList = () => {
+const PackingList = ({items}) => {
   return (
-    <div className='list'>LIST</div>
+    <div className='list'>
+    <ul>
+      {items.map(item => <Item key={item.id} item={item}/>)}
+    </ul>
+    </div>
   )
 }
 
