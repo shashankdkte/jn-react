@@ -38,11 +38,19 @@ function App() {
       })
     })
   }
+
+  const handleClearList = () => {
+    const confirm = window.confirm("Are you sure you want to delete all Items ?");
+    if (confirm)
+    {
+      setItems([]);
+      }
+  }
   const packedItems =items.filter(item => item.packed)
   return <div className="app" >
     <Logo />
     <Form handleAddItem={handleAddItem}/>
-    <PackingList items={items} handleDeleteItem={handleDeleteItem}  handleToggleItem={handleToggleItem}/>
+    <PackingList items={items} handleDeleteItem={handleDeleteItem}  handleToggleItem={handleToggleItem} handleClearList={handleClearList}/>
     <Stats numItems = {items.length} packedItems={packedItems.length}/>
   </div>
 }
