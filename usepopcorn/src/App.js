@@ -10,6 +10,7 @@ import MoviesList from "./components/MoviesList";
 import Box from "./components/Box";
 import MovieSummary from "./components/MovieSummary";
 import MovieWatchedList from "./components/MovieWatchedList";
+import MovieDetails from "./components/MovieDetails";
 
 const tempMovieData = [
   {
@@ -69,7 +70,9 @@ export default function App() {
   const [watched, setWatched] = useState(tempWatchedData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "interstellar"
+  const [query, setQuery] = useState("");
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
+  // const query = "interstellar"
 
   useEffect(() => {
     async function fetchMovies() {
@@ -78,7 +81,8 @@ export default function App() {
     
       try
       {
-      setLoading(true);
+        setLoading(true);
+        setError("")
       const response = await fetch(`http://www.omdbapi.com/?apiKey=${API_KEY}&s=${query}`);
         const data = await response.json();
         console.log(data);
@@ -101,8 +105,14 @@ export default function App() {
         setLoading(false);
       }
     }
+    if (query.length < 3)
+    {
+      setMovies([]);
+      setError("");
+      return;
+      }
     fetchMovies();
-},[])
+},[query])
 
 
   return (
@@ -110,16 +120,19 @@ export default function App() {
       
       <Navbar>
          <Logo />
-        <SearchInput />
+        <SearchInput query={query} setQuery={setQuery} />
         <NumResults movies={movies}/>
     </Navbar>
       <Main>
         <Box>
           {loading && !error && <Loading />}
           {error && <ErrorComponent  message={error}/>}
-          {!loading && !error && <MoviesList  movies={movies}/>}
+          {!loading && !error && <MoviesList  movies={movies}  setSelectedMovieId={setSelectedMovieId}/>}
         </Box>
         <Box>
+          {
+            <MovieDetails  selectedMovieId={selectedMovieId}/>
+        }
           <MovieSummary watched={watched} />
           <MovieWatchedList watched={watched}/>
         </Box>
