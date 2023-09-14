@@ -4,8 +4,8 @@ import MovieListItem from './MovieListItem'
 const MoviesList = ({movies ,setSelectedMovieId}) => {
   return (
                <ul className="list">
-              {movies?.map((movie) => (
-                <MovieListItem  movie={movie} setSelectedMovieId={setSelectedMovieId}/>
+              {movies?.map((movie,index) => (
+                <MovieListItem  movie={movie} setSelectedMovieId={setSelectedMovieId}  key={index}/>
               ))}
             </ul>
   )

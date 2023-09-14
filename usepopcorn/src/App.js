@@ -66,14 +66,17 @@ const API_KEY = '328ea8b6';
 
 export default function App() {
 
-  const [movies, setMovies] = useState(tempMovieData);
-  const [watched, setWatched] = useState(tempWatchedData);
+  const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
   // const query = "interstellar"
 
+  const watchedIds = watched.map(movie => movie.imdbID);
+  const isWatched = watchedIds.includes(selectedMovieId);
+  console.log(isWatched);
   useEffect(() => {
     async function fetchMovies() {
       
@@ -112,9 +115,29 @@ export default function App() {
       return;
       }
     fetchMovies();
-},[query])
+    
 
+  }, [query])
+  
 
+  
+
+  const handleMovieId = (id) => {
+    setSelectedMovieId((prev) => {
+      return prev === id ? null : id
+    })
+  }
+  const onCloseMovie = () => {
+    setSelectedMovieId(null);
+  }
+
+  const addMovieToWatchList = (newMovie) => {
+    setWatched((prevMovies) => {
+    
+        return [...prevMovies, newMovie]
+      
+    })
+  }
   return (
     <>
       
@@ -127,24 +150,30 @@ export default function App() {
         <Box>
           {loading && !error && <Loading />}
           {error && <ErrorComponent  message={error}/>}
-          {!loading && !error && <MoviesList  movies={movies}  setSelectedMovieId={setSelectedMovieId}/>}
+          {!loading && !error && <MoviesList  movies={movies}  setSelectedMovieId={handleMovieId} />}
         </Box>
         <Box>
           {
-            <MovieDetails  selectedMovieId={selectedMovieId}/>
-        }
-          <MovieSummary watched={watched} />
+           selectedMovieId && <MovieDetails  selectedMovieId={selectedMovieId} onCloseMovie={onCloseMovie} onAddMovie={addMovieToWatchList} watched={watched}/>
+          }
+          {
+            !selectedMovieId &&
+            <>
+              <MovieSummary watched={watched} />
           <MovieWatchedList watched={watched}/>
+            </>
+          }
+          
         </Box>
       </Main>
     </>
   );
 }
 
-  const Loading = () => {
+  export const Loading = () => {
     return <p className="loader">Loading</p>
   }
 
-  const ErrorComponent = ({message}) => {
+  export const ErrorComponent = ({message}) => {
     return <p className="error"><span>⛔</span> {message}</p>
   }
