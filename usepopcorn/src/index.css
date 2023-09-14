@@ -53,11 +53,12 @@ body {
 
 .box {
   width: 42rem;
-  max-width: 42rem;
+  /* max-width: 42rem; */
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
-  /* overflow: scroll; */
+  overflow: scroll;
   position: relative;
+  /* height: auto; */
 }
 
 .loader {
@@ -140,7 +141,8 @@ body {
 .list {
   list-style: none;
   padding: 0.8rem 0;
-  /* overflow: scroll; */
+  overflow: scroll;
+ 
 }
 
 .list-watched {
@@ -381,3 +383,15 @@ EMPTY STAR
 </svg>
 
 */
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}

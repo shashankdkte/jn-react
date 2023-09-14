@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Main from "./components/Main";
 import Logo from "./components/Logo";
@@ -60,11 +60,49 @@ const tempWatchedData = [
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+const API_KEY = '328ea8b6';
+
 
 export default function App() {
 
   const [movies, setMovies] = useState(tempMovieData);
-const [watched, setWatched] = useState(tempWatchedData);
+  const [watched, setWatched] = useState(tempWatchedData);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const query = "interstellar"
+
+  useEffect(() => {
+    async function fetchMovies() {
+      
+
+    
+      try
+      {
+      setLoading(true);
+      const response = await fetch(`http://www.omdbapi.com/?apiKey=${API_KEY}&s=${query}`);
+        const data = await response.json();
+        console.log(data);
+        if (data.Response === "True")
+        {
+          setMovies(data.Search);
+        }
+        else
+        {
+          setError(data.Error);
+        }
+        console.log(data);
+      }
+      catch (err)
+      {
+      setError(err.message)
+      }
+      finally
+      {
+        setLoading(false);
+      }
+    }
+    fetchMovies();
+},[])
 
 
   return (
@@ -77,7 +115,9 @@ const [watched, setWatched] = useState(tempWatchedData);
     </Navbar>
       <Main>
         <Box>
-          <MoviesList  movies={movies}/>
+          {loading && !error && <Loading />}
+          {error && <ErrorComponent  message={error}/>}
+          {!loading && !error && <MoviesList  movies={movies}/>}
         </Box>
         <Box>
           <MovieSummary watched={watched} />
@@ -87,3 +127,11 @@ const [watched, setWatched] = useState(tempWatchedData);
     </>
   );
 }
+
+  const Loading = () => {
+    return <p className="loader">Loading</p>
+  }
+
+  const ErrorComponent = ({message}) => {
+    return <p className="error"><span>⛔</span> {message}</p>
+  }

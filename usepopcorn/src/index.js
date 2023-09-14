@@ -6,6 +6,7 @@ import StarRating from "./components/StarRating";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <StarRating />
+    // <StarRating  messages={["Terrible","Bad", "Okay", "Good", "Amazing"]}/>
+    <App />
   
 );
