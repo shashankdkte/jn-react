@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MovieWatchedListItem = ({movie}) => {
+const MovieWatchedListItem = ({movie,onDeleteMovie}) => {
   return (
      <li key={movie.imdbID} >
                     <img src={movie.poster} alt={`${movie.title} poster`} />
@@ -17,7 +17,13 @@ const MovieWatchedListItem = ({movie}) => {
                       <p>
                         <span>⏳</span>
                         <span>{movie.runtime} min</span>
-                      </p>
+        </p>
+        <button
+          className="btn-delete"
+          onClick={() => onDeleteMovie(movie.imdbID)}
+        >
+          X
+        </button>
                     </div>
                   </li>
   )

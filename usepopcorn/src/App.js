@@ -58,7 +58,13 @@ const tempWatchedData = [
     userRating: 9,
   },
 ];
+  export const Loading = () => {
+    return <p className="loader">Loading</p>
+  }
 
+  export const ErrorComponent = ({message}) => {
+    return <p className="error"><span>⛔</span> {message}</p>
+  }
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 const API_KEY = '328ea8b6';
@@ -67,11 +73,14 @@ const API_KEY = '328ea8b6';
 export default function App() {
 
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+    return JSON.parse(storedValue) || [];
+  });
   // const query = "interstellar"
 
   const watchedIds = watched.map(movie => movie.imdbID);
@@ -138,6 +147,12 @@ export default function App() {
       
     })
   }
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched) )
+  },[watched])
   return (
     <>
       
@@ -160,7 +175,7 @@ export default function App() {
             !selectedMovieId &&
             <>
               <MovieSummary watched={watched} />
-          <MovieWatchedList watched={watched}/>
+          <MovieWatchedList watched={watched}  onDeleteMovie={handleDeleteWatched}/>
             </>
           }
           
@@ -170,10 +185,4 @@ export default function App() {
   );
 }
 
-  export const Loading = () => {
-    return <p className="loader">Loading</p>
-  }
-
-  export const ErrorComponent = ({message}) => {
-    return <p className="error"><span>⛔</span> {message}</p>
-  }
+  

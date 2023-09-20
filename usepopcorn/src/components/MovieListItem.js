@@ -1,6 +1,6 @@
 import React from 'react'
 
-const MovieListItem = ({movie,setSelectedMovieId}) => {
+const MovieListItem = ({movie,setSelectedMovieId }) => {
   return (
     <li key={movie.imdbID} onClick={()=> setSelectedMovieId(movie.imdbID)}>
                   <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -9,7 +9,8 @@ const MovieListItem = ({movie,setSelectedMovieId}) => {
                     <p>
                       <span>🗓</span>
                       <span>{movie.Year}</span>
-                    </p>
+        </p>
+         
                   </div>
                 </li>
   )
